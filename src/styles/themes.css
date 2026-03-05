@@ -1,0 +1,108 @@
+/**
+ * 主题样式定义
+ * 为微信小程序提供基于类名的主题切换
+ */
+/**
+ * Less 变量定义
+ * 定义主题颜色、间距、尺寸等全局变量
+ * Validates: Requirements 9.1, 9.3
+ */
+.theme-pokemon {
+  --theme-primary: #FFCB05;
+  --theme-secondary: #3D7DCA;
+  --theme-background: #FFFFFF;
+  --theme-surface: #F5F5F5;
+  --theme-text: #2C2C2C;
+  --theme-text-secondary: #666666;
+  --theme-accent: #FF0000;
+}
+.theme-dark {
+  --theme-primary: #BB86FC;
+  --theme-secondary: #03DAC6;
+  --theme-background: #121212;
+  --theme-surface: #1E1E1E;
+  --theme-text: #FFFFFF;
+  --theme-text-secondary: #B3B3B3;
+  --theme-accent: #CF6679;
+}
+.theme-light {
+  --theme-primary: #6200EE;
+  --theme-secondary: #03DAC6;
+  --theme-background: #FFFFFF;
+  --theme-surface: #F5F5F5;
+  --theme-text: #000000;
+  --theme-text-secondary: #757575;
+  --theme-accent: #018786;
+}
+.theme-bg {
+  background: #f5f5f5;
+}
+.theme-pokemon .theme-bg {
+  background: #FFFFFF;
+}
+.theme-dark .theme-bg {
+  background: #121212;
+}
+.theme-light .theme-bg {
+  background: #FFFFFF;
+}
+.theme-surface {
+  background: #f5f5f5;
+}
+.theme-pokemon .theme-surface {
+  background: #F5F5F5;
+}
+.theme-dark .theme-surface {
+  background: #1E1E1E;
+}
+.theme-light .theme-surface {
+  background: #F5F5F5;
+}
+.theme-text {
+  color: #2c2c2c;
+}
+.theme-pokemon .theme-text {
+  color: #2C2C2C;
+}
+.theme-dark .theme-text {
+  color: #FFFFFF;
+}
+.theme-light .theme-text {
+  color: #000000;
+}
+.theme-text-secondary {
+  color: #666666;
+}
+.theme-pokemon .theme-text-secondary {
+  color: #666666;
+}
+.theme-dark .theme-text-secondary {
+  color: #B3B3B3;
+}
+.theme-light .theme-text-secondary {
+  color: #757575;
+}
+.theme-primary-bg {
+  background: #ffcb05;
+}
+.theme-pokemon .theme-primary-bg {
+  background: #FFCB05;
+}
+.theme-dark .theme-primary-bg {
+  background: #BB86FC;
+}
+.theme-light .theme-primary-bg {
+  background: #6200EE;
+}
+.theme-primary-text {
+  color: #ffcb05;
+}
+.theme-pokemon .theme-primary-text {
+  color: #FFCB05;
+}
+.theme-dark .theme-primary-text {
+  color: #BB86FC;
+}
+.theme-light .theme-primary-text {
+  color: #6200EE;
+}

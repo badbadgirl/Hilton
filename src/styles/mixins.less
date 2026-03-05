@@ -1,0 +1,318 @@
+/**
+ * Less 混合（Mixins）
+ * 定义可复用的样式模式和响应式布局工具
+ * Validates: Requirements 9.1, 9.3
+ */
+
+// ============================================
+// 响应式布局混合
+// ============================================
+
+/**
+ * 移动端优先的响应式断点
+ */
+.respond-to-sm(@rules) {
+  @media (min-width: @breakpoint-sm) {
+    @rules();
+  }
+}
+
+.respond-to-md(@rules) {
+  @media (min-width: @breakpoint-md) {
+    @rules();
+  }
+}
+
+.respond-to-lg(@rules) {
+  @media (min-width: @breakpoint-lg) {
+    @rules();
+  }
+}
+
+.respond-to-xl(@rules) {
+  @media (min-width: @breakpoint-xl) {
+    @rules();
+  }
+}
+
+// ============================================
+// Flexbox 布局混合
+// ============================================
+
+/**
+ * Flex 容器 - 水平居中
+ */
+.flex-center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/**
+ * Flex 容器 - 垂直布局
+ */
+.flex-column() {
+  display: flex;
+  flex-direction: column;
+}
+
+/**
+ * Flex 容器 - 水平布局，两端对齐
+ */
+.flex-between() {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/**
+ * Flex 容器 - 水平布局，均匀分布
+ */
+.flex-around() {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+// ============================================
+// 宝可梦风格视觉元素混合
+// ============================================
+
+/**
+ * 宝可梦风格卡片
+ */
+.pokemon-card() {
+  background: @color-surface;
+  border-radius: @border-radius-lg;
+  box-shadow: @shadow-md;
+  padding: @spacing-md;
+  transition: all @transition-normal;
+  
+  &:hover {
+    box-shadow: @shadow-lg;
+    transform: translateY(-2px);
+  }
+}
+
+/**
+ * 宝可梦风格按钮
+ */
+.pokemon-button() {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: @size-min-touch;
+  min-width: @size-min-touch;
+  padding: @spacing-sm @spacing-lg;
+  border: none;
+  border-radius: @border-radius-md;
+  background: @color-primary;
+  color: @color-text;
+  font-size: @font-size-md;
+  font-weight: @font-weight-medium;
+  cursor: pointer;
+  transition: all @transition-fast;
+  
+  &:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+/**
+ * 宝可梦风格输入框
+ */
+.pokemon-input() {
+  width: 100%;
+  min-height: @size-min-touch;
+  padding: @spacing-sm @spacing-md;
+  border: 2px solid @color-surface;
+  border-radius: @border-radius-md;
+  background: @color-background;
+  color: @color-text;
+  font-size: @font-size-md;
+  transition: all @transition-fast;
+  
+  &:focus {
+    outline: none;
+    border-color: @color-primary;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  }
+  
+  &::placeholder {
+    color: @color-text-secondary;
+  }
+}
+
+/**
+ * 宝可梦风格渐变背景
+ */
+.pokemon-gradient() {
+  background: linear-gradient(
+    135deg,
+    @color-primary 0%,
+    @color-secondary 100%
+  );
+}
+
+/**
+ * 精灵球风格渐变
+ */
+.pokeball-gradient() {
+  background: linear-gradient(
+    180deg,
+    #ff0000 0%,
+    #ff0000 45%,
+    #000000 45%,
+    #000000 55%,
+    #ffffff 55%,
+    #ffffff 100%
+  );
+}
+
+// ============================================
+// 文本样式混合
+// ============================================
+
+/**
+ * 文本截断（单行）
+ */
+.text-ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/**
+ * 文本截断（多行）
+ */
+.text-clamp(@lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: @lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/**
+ * 标题样式
+ */
+.heading-style(@size: @font-size-2xl) {
+  font-size: @size;
+  font-weight: @font-weight-bold;
+  line-height: @line-height-tight;
+  color: @color-text;
+}
+
+// ============================================
+// 动画混合
+// ============================================
+
+/**
+ * 淡入动画
+ */
+.fade-in(@duration: @transition-normal) {
+  animation: fadeIn @duration ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/**
+ * 滑入动画（从下方）
+ */
+.slide-up(@duration: @transition-normal) {
+  animation: slideUp @duration ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/**
+ * 缩放动画
+ */
+.scale-in(@duration: @transition-normal) {
+  animation: scaleIn @duration ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// ============================================
+// 工具混合
+// ============================================
+
+/**
+ * 清除浮动
+ */
+.clearfix() {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+/**
+ * 隐藏滚动条
+ */
+.hide-scrollbar() {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/**
+ * 绝对居中
+ */
+.absolute-center() {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/**
+ * 全屏覆盖
+ */
+.full-cover() {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

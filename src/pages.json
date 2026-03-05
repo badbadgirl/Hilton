@@ -1,0 +1,22 @@
+{
+  "pages": [
+    {
+      "path": "pages/search/search",
+      "style": {
+        "navigationBarTitleText": "Pokemon Search"
+      }
+    },
+    {
+      "path": "pages/detail/detail",
+      "style": {
+        "navigationBarTitleText": "Pokemon Detail"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Pokemon",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  }
+}

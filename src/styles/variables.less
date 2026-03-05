@@ -1,0 +1,134 @@
+/**
+ * Less 变量定义
+ * 定义主题颜色、间距、尺寸等全局变量
+ * Validates: Requirements 9.1, 9.3
+ */
+
+// ============================================
+// 主题颜色变量（引用 CSS 变量）
+// ============================================
+// 这些变量由 ThemeStore 动态设置
+@color-primary: var(--color-primary);
+@color-secondary: var(--color-secondary);
+@color-background: var(--color-background);
+@color-surface: var(--color-surface);
+@color-text: var(--color-text);
+@color-text-secondary: var(--color-textSecondary);
+@color-accent: var(--color-accent);
+@color-error: var(--color-error);
+@color-success: var(--color-success);
+@color-warning: var(--color-warning);
+
+// 兼容旧变量名
+@text-primary: @color-text;
+@text-secondary: @color-text-secondary;
+
+// ============================================
+// 宝可梦主题颜色（静态值用于编译时）
+// ============================================
+@pokemon-primary: #ffcb05;
+@pokemon-secondary: #3b4cca;
+@pokemon-light: #f5f5f5;
+@pokemon-dark: #2c2c2c;
+
+// ============================================
+// 宝可梦风格视觉元素
+// ============================================
+
+// 圆角
+@border-radius-sm: 8px;
+@border-radius-md: 12px;
+@border-radius-lg: 16px;
+@border-radius-xl: 24px;
+@border-radius-round: 50%;
+
+// 兼容旧变量名
+@border-radius-small: @border-radius-sm;
+@border-radius-medium: @border-radius-md;
+@border-radius-large: @border-radius-lg;
+
+// 阴影
+@shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+@shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+@shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+@shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.25);
+
+// 兼容旧变量名
+@shadow-small: @shadow-sm;
+@shadow-medium: @shadow-md;
+@shadow-large: @shadow-lg;
+
+// 宝可梦风格阴影（带颜色）
+@shadow-pokemon: 0 4px 12px rgba(255, 203, 5, 0.3);
+@shadow-pokeball: 0 4px 12px rgba(255, 0, 0, 0.3);
+
+// ============================================
+// 间距系统
+// ============================================
+@spacing-xs: 4px;
+@spacing-sm: 8px;
+@spacing-md: 16px;
+@spacing-lg: 24px;
+@spacing-xl: 32px;
+@spacing-2xl: 48px;
+@spacing-3xl: 64px;
+
+// 兼容旧变量名
+@spacing-small: @spacing-sm;
+@spacing-medium: @spacing-md;
+@spacing-large: @spacing-lg;
+
+// ============================================
+// 尺寸
+// ============================================
+@size-icon-sm: 16px;
+@size-icon-md: 24px;
+@size-icon-lg: 32px;
+@size-icon-xl: 48px;
+
+// 最小点击区域（符合无障碍规范）
+@size-min-touch: 44px;
+
+// ============================================
+// 字体
+// ============================================
+@font-size-xs: 12px;
+@font-size-sm: 14px;
+@font-size-md: 16px;
+@font-size-lg: 18px;
+@font-size-xl: 20px;
+@font-size-2xl: 24px;
+@font-size-3xl: 32px;
+
+@font-weight-normal: 400;
+@font-weight-medium: 500;
+@font-weight-bold: 700;
+
+@line-height-tight: 1.2;
+@line-height-normal: 1.5;
+@line-height-relaxed: 1.75;
+
+// ============================================
+// 过渡动画
+// ============================================
+@transition-fast: 150ms ease-in-out;
+@transition-normal: 300ms ease-in-out;
+@transition-slow: 500ms ease-in-out;
+
+// ============================================
+// 断点（响应式设计）
+// ============================================
+@breakpoint-xs: 320px;
+@breakpoint-sm: 375px;
+@breakpoint-md: 768px;
+@breakpoint-lg: 1024px;
+@breakpoint-xl: 1280px;
+
+// ============================================
+// Z-index 层级
+// ============================================
+@z-index-base: 1;
+@z-index-dropdown: 100;
+@z-index-modal: 1000;
+@z-index-toast: 2000;
+@z-index-tooltip: 3000;

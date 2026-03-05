@@ -1,0 +1,144 @@
+/**
+ * 主题样式定义
+ * 为微信小程序提供基于类名的主题切换
+ */
+
+@import './variables.less';
+
+// ============================================
+// 宝可梦主题
+// ============================================
+.theme-pokemon {
+  --theme-primary: #FFCB05;
+  --theme-secondary: #3D7DCA;
+  --theme-background: #FFFFFF;
+  --theme-surface: #F5F5F5;
+  --theme-text: #2C2C2C;
+  --theme-text-secondary: #666666;
+  --theme-accent: #FF0000;
+}
+
+// ============================================
+// 暗黑主题
+// ============================================
+.theme-dark {
+  --theme-primary: #BB86FC;
+  --theme-secondary: #03DAC6;
+  --theme-background: #121212;
+  --theme-surface: #1E1E1E;
+  --theme-text: #FFFFFF;
+  --theme-text-secondary: #B3B3B3;
+  --theme-accent: #CF6679;
+}
+
+// ============================================
+// 明亮主题
+// ============================================
+.theme-light {
+  --theme-primary: #6200EE;
+  --theme-secondary: #03DAC6;
+  --theme-background: #FFFFFF;
+  --theme-surface: #F5F5F5;
+  --theme-text: #000000;
+  --theme-text-secondary: #757575;
+  --theme-accent: #018786;
+}
+
+// ============================================
+// 主题相关的通用样式类
+// ============================================
+.theme-bg {
+  background: @pokemon-light;
+  
+  .theme-pokemon & {
+    background: #FFFFFF;
+  }
+  
+  .theme-dark & {
+    background: #121212;
+  }
+  
+  .theme-light & {
+    background: #FFFFFF;
+  }
+}
+
+.theme-surface {
+  background: @pokemon-light;
+  
+  .theme-pokemon & {
+    background: #F5F5F5;
+  }
+  
+  .theme-dark & {
+    background: #1E1E1E;
+  }
+  
+  .theme-light & {
+    background: #F5F5F5;
+  }
+}
+
+.theme-text {
+  color: @pokemon-dark;
+  
+  .theme-pokemon & {
+    color: #2C2C2C;
+  }
+  
+  .theme-dark & {
+    color: #FFFFFF;
+  }
+  
+  .theme-light & {
+    color: #000000;
+  }
+}
+
+.theme-text-secondary {
+  color: #666666;
+  
+  .theme-pokemon & {
+    color: #666666;
+  }
+  
+  .theme-dark & {
+    color: #B3B3B3;
+  }
+  
+  .theme-light & {
+    color: #757575;
+  }
+}
+
+.theme-primary-bg {
+  background: @pokemon-primary;
+  
+  .theme-pokemon & {
+    background: #FFCB05;
+  }
+  
+  .theme-dark & {
+    background: #BB86FC;
+  }
+  
+  .theme-light & {
+    background: #6200EE;
+  }
+}
+
+.theme-primary-text {
+  color: @pokemon-primary;
+  
+  .theme-pokemon & {
+    color: #FFCB05;
+  }
+  
+  .theme-dark & {
+    color: #BB86FC;
+  }
+  
+  .theme-light & {
+    color: #6200EE;
+  }
+}

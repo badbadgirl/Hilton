@@ -1,0 +1,93 @@
+/**
+ * Less 混合（Mixins）
+ * 定义可复用的样式模式和响应式布局工具
+ * Validates: Requirements 9.1, 9.3
+ */
+/**
+ * 移动端优先的响应式断点
+ */
+/**
+ * Flex 容器 - 水平居中
+ */
+/**
+ * Flex 容器 - 垂直布局
+ */
+/**
+ * Flex 容器 - 水平布局，两端对齐
+ */
+/**
+ * Flex 容器 - 水平布局，均匀分布
+ */
+/**
+ * 宝可梦风格卡片
+ */
+/**
+ * 宝可梦风格按钮
+ */
+/**
+ * 宝可梦风格输入框
+ */
+/**
+ * 宝可梦风格渐变背景
+ */
+/**
+ * 精灵球风格渐变
+ */
+/**
+ * 文本截断（单行）
+ */
+/**
+ * 文本截断（多行）
+ */
+/**
+ * 标题样式
+ */
+/**
+ * 淡入动画
+ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/**
+ * 滑入动画（从下方）
+ */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/**
+ * 缩放动画
+ */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/**
+ * 清除浮动
+ */
+/**
+ * 隐藏滚动条
+ */
+/**
+ * 绝对居中
+ */
+/**
+ * 全屏覆盖
+ */

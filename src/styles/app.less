@@ -1,0 +1,416 @@
+/**
+ * 全局样式
+ * 定义应用的基础样式、响应式布局类和全局重置
+ * Validates: Requirements 9.2, 9.4
+ */
+
+@import './variables.less';
+@import './mixins.less';
+
+// ============================================
+// 全局重置和基础样式
+// ============================================
+
+/* WeChat Mini Program doesn't support universal selector (*) */
+view,
+text,
+button,
+input,
+image,
+scroll-view {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+page {
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: @font-size-md;
+  line-height: @line-height-normal;
+  color: @color-text;
+  background: @color-background;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ============================================
+// 响应式布局基础类
+// ============================================
+
+/**
+ * 容器类 - 提供响应式最大宽度和居中
+ */
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 @spacing-md;
+
+  @media (min-width: @breakpoint-sm) {
+    padding: 0 @spacing-lg;
+  }
+
+  @media (min-width: @breakpoint-md) {
+    max-width: 720px;
+  }
+
+  @media (min-width: @breakpoint-lg) {
+    max-width: 960px;
+  }
+
+  @media (min-width: @breakpoint-xl) {
+    max-width: 1200px;
+  }
+}
+
+/**
+ * 流式容器 - 全宽度，带内边距
+ */
+.container-fluid {
+  width: 100%;
+  padding: 0 @spacing-md;
+
+  @media (min-width: @breakpoint-sm) {
+    padding: 0 @spacing-lg;
+  }
+}
+
+/**
+ * 网格系统 - 响应式列布局
+ */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -@spacing-sm;
+
+  @media (min-width: @breakpoint-md) {
+    margin: 0 -@spacing-md;
+  }
+}
+
+.col {
+  flex: 1;
+  padding: 0 @spacing-sm;
+
+  @media (min-width: @breakpoint-md) {
+    padding: 0 @spacing-md;
+  }
+}
+
+// 响应式列宽度类
+.col-12 { width: 100%; }
+.col-6 { width: 50%; }
+.col-4 { width: 33.333%; }
+.col-3 { width: 25%; }
+
+@media (min-width: @breakpoint-md) {
+  .col-md-12 { width: 100%; }
+  .col-md-6 { width: 50%; }
+  .col-md-4 { width: 33.333%; }
+  .col-md-3 { width: 25%; }
+}
+
+@media (min-width: @breakpoint-lg) {
+  .col-lg-12 { width: 100%; }
+  .col-lg-6 { width: 50%; }
+  .col-lg-4 { width: 33.333%; }
+  .col-lg-3 { width: 25%; }
+}
+
+// ============================================
+// 交互元素最小点击区域（44x44像素）
+// ============================================
+
+/**
+ * 确保所有交互元素符合无障碍规范
+ * Validates: Requirement 9.4
+ */
+button,
+.link,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.clickable {
+  min-height: @size-min-touch;
+  min-width: @size-min-touch;
+}
+
+// 对于内联链接，使用内边距确保点击区域
+.link:not(.button) {
+  display: inline-block;
+  padding: @spacing-xs;
+  margin: -@spacing-xs;
+}
+
+// ============================================
+// Flex 布局工具类
+// ============================================
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  .flex-column();
+}
+
+.flex-center {
+  .flex-center();
+}
+
+.flex-between {
+  .flex-between();
+}
+
+.flex-around {
+  .flex-around();
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+// ============================================
+// 间距工具类
+// ============================================
+
+// Margin
+.m-0 { margin: 0; }
+.m-xs { margin: @spacing-xs; }
+.m-sm { margin: @spacing-sm; }
+.m-md { margin: @spacing-md; }
+.m-lg { margin: @spacing-lg; }
+.m-xl { margin: @spacing-xl; }
+
+.mt-0 { margin-top: 0; }
+.mt-xs { margin-top: @spacing-xs; }
+.mt-sm { margin-top: @spacing-sm; }
+.mt-md { margin-top: @spacing-md; }
+.mt-lg { margin-top: @spacing-lg; }
+.mt-xl { margin-top: @spacing-xl; }
+
+.mb-0 { margin-bottom: 0; }
+.mb-xs { margin-bottom: @spacing-xs; }
+.mb-sm { margin-bottom: @spacing-sm; }
+.mb-md { margin-bottom: @spacing-md; }
+.mb-lg { margin-bottom: @spacing-lg; }
+.mb-xl { margin-bottom: @spacing-xl; }
+
+.ml-0 { margin-left: 0; }
+.ml-xs { margin-left: @spacing-xs; }
+.ml-sm { margin-left: @spacing-sm; }
+.ml-md { margin-left: @spacing-md; }
+.ml-lg { margin-left: @spacing-lg; }
+.ml-xl { margin-left: @spacing-xl; }
+
+.mr-0 { margin-right: 0; }
+.mr-xs { margin-right: @spacing-xs; }
+.mr-sm { margin-right: @spacing-sm; }
+.mr-md { margin-right: @spacing-md; }
+.mr-lg { margin-right: @spacing-lg; }
+.mr-xl { margin-right: @spacing-xl; }
+
+// Padding
+.p-0 { padding: 0; }
+.p-xs { padding: @spacing-xs; }
+.p-sm { padding: @spacing-sm; }
+.p-md { padding: @spacing-md; }
+.p-lg { padding: @spacing-lg; }
+.p-xl { padding: @spacing-xl; }
+
+.pt-0 { padding-top: 0; }
+.pt-xs { padding-top: @spacing-xs; }
+.pt-sm { padding-top: @spacing-sm; }
+.pt-md { padding-top: @spacing-md; }
+.pt-lg { padding-top: @spacing-lg; }
+.pt-xl { padding-top: @spacing-xl; }
+
+.pb-0 { padding-bottom: 0; }
+.pb-xs { padding-bottom: @spacing-xs; }
+.pb-sm { padding-bottom: @spacing-sm; }
+.pb-md { padding-bottom: @spacing-md; }
+.pb-lg { padding-bottom: @spacing-lg; }
+.pb-xl { padding-bottom: @spacing-xl; }
+
+.pl-0 { padding-left: 0; }
+.pl-xs { padding-left: @spacing-xs; }
+.pl-sm { padding-left: @spacing-sm; }
+.pl-md { padding-left: @spacing-md; }
+.pl-lg { padding-left: @spacing-lg; }
+.pl-xl { padding-left: @spacing-xl; }
+
+.pr-0 { padding-right: 0; }
+.pr-xs { padding-right: @spacing-xs; }
+.pr-sm { padding-right: @spacing-sm; }
+.pr-md { padding-right: @spacing-md; }
+.pr-lg { padding-right: @spacing-lg; }
+.pr-xl { padding-right: @spacing-xl; }
+
+// ============================================
+// 文本工具类
+// ============================================
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+.text-xs { font-size: @font-size-xs; }
+.text-sm { font-size: @font-size-sm; }
+.text-md { font-size: @font-size-md; }
+.text-lg { font-size: @font-size-lg; }
+.text-xl { font-size: @font-size-xl; }
+.text-2xl { font-size: @font-size-2xl; }
+.text-3xl { font-size: @font-size-3xl; }
+
+.font-normal { font-weight: @font-weight-normal; }
+.font-medium { font-weight: @font-weight-medium; }
+.font-bold { font-weight: @font-weight-bold; }
+
+.text-ellipsis {
+  .text-ellipsis();
+}
+
+// ============================================
+// 显示工具类
+// ============================================
+
+.hidden {
+  display: none;
+}
+
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+// 响应式显示类
+@media (max-width: 374px) {
+  .hidden-xs { display: none; }
+}
+
+@media (min-width: @breakpoint-sm) and (max-width: 767px) {
+  .hidden-sm { display: none; }
+}
+
+@media (min-width: @breakpoint-md) and (max-width: 1023px) {
+  .hidden-md { display: none; }
+}
+
+@media (min-width: @breakpoint-lg) {
+  .hidden-lg { display: none; }
+}
+
+// ============================================
+// 宝可梦主题样式类
+// ============================================
+
+.pokemon-card {
+  .pokemon-card();
+}
+
+.pokemon-button {
+  .pokemon-button();
+}
+
+.pokemon-input {
+  .pokemon-input();
+}
+
+.pokemon-gradient {
+  .pokemon-gradient();
+}
+
+.pokeball-gradient {
+  .pokeball-gradient();
+}
+
+// ============================================
+// 动画类
+// ============================================
+
+.fade-in {
+  .fade-in();
+}
+
+.slide-up {
+  .slide-up();
+}
+
+.scale-in {
+  .scale-in();
+}
+
+// ============================================
+// 无障碍辅助类
+// ============================================
+
+/**
+ * 视觉隐藏但保留屏幕阅读器可访问性
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/**
+ * 跳过导航链接（键盘导航）
+ */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: @color-primary;
+  color: @color-text;
+  padding: @spacing-sm @spacing-md;
+  text-decoration: none;
+  z-index: @z-index-tooltip;
+
+  &:focus {
+    top: 0;
+  }
+}
