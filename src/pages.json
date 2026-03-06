@@ -11,12 +11,19 @@
       "style": {
         "navigationBarTitleText": "Pokemon Search"
       }
-    },
+    }
+  ],
+  "subPackages": [
     {
-      "path": "pages/detail/detail",
-      "style": {
-        "navigationBarTitleText": "Pokemon Detail"
-      }
+      "root": "pages/detail",
+      "pages": [
+        {
+          "path": "detail",
+          "style": {
+            "navigationBarTitleText": "Pokemon Detail"
+          }
+        }
+      ]
     }
   ],
   "globalStyle": {
