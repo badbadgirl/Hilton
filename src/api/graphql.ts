@@ -101,6 +101,24 @@ export class GraphQLClient {
   }
 
   /**
+   * Get Pokemon list (no keyword filter)
+   */
+  async listPokemon(limit: number = 100, offset: number = 0): Promise<SearchResponse> {
+    const query = `query pokemon_v2_pokemon($limit: Int!, $offset: Int!) {
+      pokemon_v2_pokemon(limit: $limit, offset: $offset, order_by: {id: asc}) {
+        id
+        name
+        pokemon_v2_pokemonabilities {
+          pokemon_v2_ability {
+            name
+          }
+        }
+      }
+    }`
+    return this.request<SearchResponse>(query, { limit, offset })
+  }
+
+  /**
    * Search for Pokemon species by name
    * Validates: Requirements 3.2, 3.3, 5.2
    * @param keyword - Search keyword for fuzzy matching

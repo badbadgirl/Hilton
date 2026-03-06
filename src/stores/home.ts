@@ -1,14 +1,8 @@
-/**
- * SearchStore - 搜索状态管理
- * 管理宝可梦搜索的状态、结果和滚动加载
- */
-
 import { defineStore } from 'pinia'
 import { pokeApiClient } from '../api/graphql'
 import type { PokemonSpecies } from '../types/pokemon'
 
-interface SearchState {
-  keyword: string
+interface HomeState {
   allResults: PokemonSpecies[]
   displayCount: number
   pageSize: number
@@ -17,9 +11,8 @@ interface SearchState {
   error: string | null
 }
 
-export const useSearchStore = defineStore('search', {
-  state: (): SearchState => ({
-    keyword: '',
+export const useHomeStore = defineStore('home', {
+  state: (): HomeState => ({
     allResults: [],
     displayCount: 10,
     pageSize: 10,
@@ -32,34 +25,25 @@ export const useSearchStore = defineStore('search', {
     displayedResults(): PokemonSpecies[] {
       return this.allResults.slice(0, this.displayCount)
     },
-
     hasResults(): boolean {
       return this.allResults.length > 0
     },
-
-    isEmpty(): boolean {
-      return !this.isLoading && this.allResults.length === 0 && this.keyword !== ''
-    },
-
     hasMore(): boolean {
       return this.displayCount < this.allResults.length
     },
   },
 
   actions: {
-    async search(keyword: string): Promise<void> {
+    async fetchList(): Promise<void> {
+      if (this.allResults.length > 0) return // 已加载过就不重复请求
       this.isLoading = true
       this.error = null
-      this.keyword = keyword
-
       try {
-        const response = keyword.trim() === ''
-          ? await pokeApiClient.listPokemon(1000, 0)
-          : await pokeApiClient.searchPokemonSpecies(keyword, 1000, 0)
+        const response = await pokeApiClient.listPokemon(1000, 0)
         this.allResults = response.pokemon_v2_pokemon
         this.displayCount = this.pageSize
       } catch (err) {
-        this.error = err instanceof Error ? err.message : '搜索失败'
+        this.error = err instanceof Error ? err.message : '加载失败'
         this.allResults = []
       } finally {
         this.isLoading = false
@@ -71,13 +55,6 @@ export const useSearchStore = defineStore('search', {
       this.isLoadingMore = true
       this.displayCount += this.pageSize
       this.isLoadingMore = false
-    },
-
-    clearResults(): void {
-      this.keyword = ''
-      this.allResults = []
-      this.displayCount = 10
-      this.error = null
     },
   },
 })

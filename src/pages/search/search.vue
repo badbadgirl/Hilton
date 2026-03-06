@@ -1,7 +1,6 @@
 <template>
   <view :class="['search-page', 'theme-bg', themeClass]">
     <view class="page-header">
-      <ThemeSelector />
       <text :class="['page-title', 'theme-primary-text']">宝可梦搜索</text>
     </view>
 
@@ -22,38 +21,33 @@
 
     <view v-if="!searchStore.isLoading" class="results-section">
       <SearchResults
-        :results="searchStore.paginatedResults"
+        :results="searchStore.displayedResults"
         :is-empty="searchStore.isEmpty"
         @pokemon-click="navigateToDetail"
       />
 
-      <Pagination
-        v-if="searchStore.hasResults"
-        :current-page="searchStore.currentPage"
-        :total-pages="searchStore.totalPages"
-        @page-change="handlePageChange"
-      />
+      <view v-if="searchStore.isLoadingMore" class="loading-more">
+        <text>加载中...</text>
+      </view>
+      <view v-else-if="searchStore.hasResults && !searchStore.hasMore" class="no-more">
+        <text>没有更多了</text>
+      </view>
     </view>
 
-    <WelcomeModal />
   </view>
 </template>
 
 <script setup lang="ts">
 import { onMounted, computed } from 'vue'
+import { onReachBottom } from '@dcloudio/uni-app'
 import { useSearchStore } from '../../stores/search'
-import { useWelcomeStore } from '../../stores/welcome'
 import { useThemeStore } from '../../stores/theme'
-import WelcomeModal from '../../components/WelcomeModal.vue'
-import ThemeSelector from '../../components/ThemeSelector.vue'
 import SearchInput from '../../components/SearchInput.vue'
 import SearchButton from '../../components/SearchButton.vue'
 import LoadingIndicator from '../../components/LoadingIndicator.vue'
 import SearchResults from '../../components/SearchResults.vue'
-import Pagination from '../../components/Pagination.vue'
 
 const searchStore = useSearchStore()
-const welcomeStore = useWelcomeStore()
 const themeStore = useThemeStore()
 
 const themeClass = computed(() => `theme-${themeStore.currentTheme}`)
@@ -64,9 +58,9 @@ const handleSearch = async () => {
   }
 }
 
-const handlePageChange = (page: number) => {
-  searchStore.setPage(page)
-}
+onReachBottom(() => {
+  searchStore.loadMore()
+})
 
 const navigateToDetail = (pokemonId: number) => {
   // @ts-ignore - WeChat mini-app API
@@ -75,9 +69,6 @@ const navigateToDetail = (pokemonId: number) => {
   })
 }
 
-onMounted(() => {
-  welcomeStore.checkFirstLaunch()
-})
 </script>
 
 <style lang="less" scoped>
@@ -90,9 +81,6 @@ onMounted(() => {
 }
 
 .page-header {
-  // display: flex;
-  // justify-content: space-between;
-  // align-items: center;
   margin-bottom: @spacing-sm;
 }
 
@@ -117,5 +105,20 @@ onMounted(() => {
 
 .results-section {
   margin-top: @spacing-large;
+}
+
+.loading-more {
+  text-align: center;
+  padding: @spacing-medium;
+  color: @text-secondary;
+  font-size: 14px;
+}
+
+.no-more {
+  text-align: center;
+  padding: @spacing-medium;
+  color: @text-secondary;
+  font-size: 14px;
+  opacity: 0.6;
 }
 </style>
