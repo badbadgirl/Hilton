@@ -47,12 +47,12 @@ const handleClick = () => {
 
 .pokemon-name {
   font-size: 14px;
-  color: @text-primary;
+  color: var(--theme-text, @text-primary);
   font-weight: 500;
 }
 
 .pokemon-id {
   font-size: 12px;
-  color: @text-secondary;
+  color: var(--theme-text-secondary, @text-secondary);
 }
 </style>
