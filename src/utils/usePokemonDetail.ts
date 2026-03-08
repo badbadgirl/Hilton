@@ -1,6 +1,7 @@
 import { ref, onMounted } from 'vue'
 import type { Pokemon } from '../types'
 import { pokeApiClient } from '../api/graphql'
+import { Logger } from './logger'
 
 export function usePokemonDetail(pokemonId: number) {
   const pokemon = ref<Pokemon | null>(null)
@@ -16,7 +17,7 @@ export function usePokemonDetail(pokemonId: number) {
       pokemon.value = result
     } catch (err) {
       error.value = err instanceof Error ? err.message : '获取宝可梦详情失败'
-      console.error('Failed to fetch pokemon detail:', err)
+      Logger.error('获取宝可梦详情失败:', err)
     } finally {
       isLoading.value = false
     }

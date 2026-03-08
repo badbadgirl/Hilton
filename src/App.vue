@@ -2,24 +2,24 @@
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { useThemeStore } from './stores/theme'
 import { useWelcomeStore } from './stores/welcome'
-
-const themeStore = useThemeStore()
-const welcomeStore = useWelcomeStore()
+import { Logger } from './utils/logger'
 
 onLaunch(() => {
-  console.log('App Launch')
-  // Load persisted theme
+  Logger.info('App Launch')
+  const themeStore = useThemeStore()
+  const welcomeStore = useWelcomeStore()
+  // 加载持久化主题
   themeStore.loadTheme()
-  // Check if welcome modal should be shown
+  // 检查是否需要显示欢迎弹窗
   welcomeStore.checkFirstLaunch()
 })
 
 onShow(() => {
-  console.log('App Show')
+  Logger.debug('App Show')
 })
 
 onHide(() => {
-  console.log('App Hide')
+  Logger.debug('App Hide')
 })
 </script>
 

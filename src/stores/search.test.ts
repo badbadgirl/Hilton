@@ -13,14 +13,13 @@ import type { PokemonSpecies } from '../types/pokemon'
 vi.mock('../api/graphql', () => ({
   pokeApiClient: {
     searchPokemonSpecies: vi.fn(),
+    listPokemon: vi.fn(),
   },
 }))
 
 describe('SearchStore', () => {
   beforeEach(() => {
-    // 为每个测试创建新的 Pinia 实例
     setActivePinia(createPinia())
-    // 清除所有 mock
     vi.clearAllMocks()
   })
 
@@ -29,11 +28,11 @@ describe('SearchStore', () => {
       const store = useSearchStore()
 
       expect(store.keyword).toBe('')
-      expect(store.results).toEqual([])
-      expect(store.currentPage).toBe(1)
-      expect(store.totalPages).toBe(0)
-      expect(store.pageSize).toBe(20)
+      expect(store.allResults).toEqual([])
+      expect(store.displayCount).toBe(10)
+      expect(store.pageSize).toBe(10)
       expect(store.isLoading).toBe(false)
+      expect(store.isLoadingMore).toBe(false)
       expect(store.error).toBe(null)
     })
   })
@@ -41,40 +40,31 @@ describe('SearchStore', () => {
   describe('search action', () => {
     it('应该在搜索时设置加载状态', async () => {
       const store = useSearchStore()
-      
-      // Mock API 响应
+
       vi.mocked(pokeApiClient.searchPokemonSpecies).mockImplementation(
         () => new Promise(resolve => setTimeout(() => resolve({ pokemon_v2_pokemon: [] }), 100))
       )
 
       const searchPromise = store.search('pikachu')
-      
-      // 搜索期间应该显示加载状态
       expect(store.isLoading).toBe(true)
-      
+
       await searchPromise
-      
-      // 搜索完成后应该隐藏加载状态
       expect(store.isLoading).toBe(false)
     })
 
     it('应该成功搜索并更新结果', async () => {
       const store = useSearchStore()
-      
+
       const mockResults: PokemonSpecies[] = [
         {
           id: 25,
           name: 'pikachu',
-          capture_rate: 190,
-          pokemon_v2_pokemoncolor: { name: 'yellow' },
-          pokemon_v2_pokemons: [],
+          pokemon_v2_pokemonabilities: [{ pokemon_v2_ability: { id: 9, name: 'static' } }],
         },
         {
           id: 26,
           name: 'raichu',
-          capture_rate: 75,
-          pokemon_v2_pokemoncolor: { name: 'yellow' },
-          pokemon_v2_pokemons: [],
+          pokemon_v2_pokemonabilities: [{ pokemon_v2_ability: { id: 9, name: 'static' } }],
         },
       ]
 
@@ -85,15 +75,14 @@ describe('SearchStore', () => {
       await store.search('pikachu')
 
       expect(store.keyword).toBe('pikachu')
-      expect(store.results).toEqual(mockResults)
-      expect(store.totalPages).toBe(1) // 2 results / 20 per page = 1 page
-      expect(store.currentPage).toBe(1)
+      expect(store.allResults).toEqual(mockResults)
+      expect(store.displayCount).toBe(store.pageSize)
       expect(store.error).toBe(null)
     })
 
     it('应该处理搜索错误', async () => {
       const store = useSearchStore()
-      
+
       const errorMessage = 'Network error'
       vi.mocked(pokeApiClient.searchPokemonSpecies).mockRejectedValue(
         new Error(errorMessage)
@@ -102,43 +91,32 @@ describe('SearchStore', () => {
       await store.search('pikachu')
 
       expect(store.error).toBe(errorMessage)
-      expect(store.results).toEqual([])
-      expect(store.totalPages).toBe(0)
+      expect(store.allResults).toEqual([])
       expect(store.isLoading).toBe(false)
     })
 
-    it('应该在关键词为空时清空结果', async () => {
+    it('应该在关键词为空时调用 listPokemon', async () => {
       const store = useSearchStore()
-      
-      // 先设置一些结果
-      store.results = [
-        {
-          id: 25,
-          name: 'pikachu',
-          capture_rate: 190,
-          pokemon_v2_pokemoncolor: { name: 'yellow' },
-          pokemon_v2_pokemons: [],
-        },
-      ]
-      store.keyword = 'pikachu'
+
+      vi.mocked(pokeApiClient.listPokemon).mockResolvedValue({
+        pokemon_v2_pokemon: [
+          { id: 1, name: 'bulbasaur', pokemon_v2_pokemonabilities: [] },
+        ],
+      })
 
       await store.search('')
 
-      expect(store.keyword).toBe('')
-      expect(store.results).toEqual([])
-      expect(store.totalPages).toBe(0)
+      expect(pokeApiClient.listPokemon).toHaveBeenCalled()
+      expect(store.allResults.length).toBe(1)
     })
 
-    it('应该正确计算多页结果的总页数', async () => {
+    it('应该正确处理大量结果', async () => {
       const store = useSearchStore()
-      
-      // 创建 45 个结果（应该分成 3 页，每页 20 个）
+
       const mockResults: PokemonSpecies[] = Array.from({ length: 45 }, (_, i) => ({
         id: i + 1,
         name: `pokemon-${i + 1}`,
-        capture_rate: 100,
-        pokemon_v2_pokemoncolor: { name: 'red' },
-        pokemon_v2_pokemons: [],
+        pokemon_v2_pokemonabilities: [],
       }))
 
       vi.mocked(pokeApiClient.searchPokemonSpecies).mockResolvedValue({
@@ -147,126 +125,84 @@ describe('SearchStore', () => {
 
       await store.search('pokemon')
 
-      expect(store.totalPages).toBe(3) // 45 / 20 = 2.25, rounded up to 3
+      expect(store.allResults.length).toBe(45)
+      expect(store.hasMore).toBe(true)
     })
   })
 
-  describe('setPage action', () => {
-    it('应该更新当前页码', () => {
+  describe('loadMore action', () => {
+    it('应该增加 displayCount', () => {
       const store = useSearchStore()
-      store.totalPages = 5
+      store.allResults = Array.from({ length: 30 }, (_, i) => ({
+        id: i + 1,
+        name: `pokemon-${i + 1}`,
+        pokemon_v2_pokemonabilities: [],
+      }))
+      store.displayCount = 10
 
-      store.setPage(3)
+      store.loadMore()
 
-      expect(store.currentPage).toBe(3)
+      expect(store.displayCount).toBe(20)
     })
 
-    it('应该拒绝无效的页码（小于1）', () => {
+    it('应该在没有更多数据时不加载', () => {
       const store = useSearchStore()
-      store.currentPage = 2
-      store.totalPages = 5
+      store.allResults = Array.from({ length: 5 }, (_, i) => ({
+        id: i + 1,
+        name: `pokemon-${i + 1}`,
+        pokemon_v2_pokemonabilities: [],
+      }))
+      store.displayCount = 10
 
-      store.setPage(0)
+      store.loadMore()
 
-      expect(store.currentPage).toBe(2) // 保持不变
-    })
-
-    it('应该拒绝无效的页码（大于总页数）', () => {
-      const store = useSearchStore()
-      store.currentPage = 2
-      store.totalPages = 5
-
-      store.setPage(6)
-
-      expect(store.currentPage).toBe(2) // 保持不变
+      expect(store.displayCount).toBe(10) // 不变
     })
   })
 
   describe('clearResults action', () => {
     it('应该清空所有搜索状态', () => {
       const store = useSearchStore()
-      
-      // 设置一些状态
+
       store.keyword = 'pikachu'
-      store.results = [
-        {
-          id: 25,
-          name: 'pikachu',
-          capture_rate: 190,
-          pokemon_v2_pokemoncolor: { name: 'yellow' },
-          pokemon_v2_pokemons: [],
-        },
+      store.allResults = [
+        { id: 25, name: 'pikachu', pokemon_v2_pokemonabilities: [] },
       ]
-      store.currentPage = 2
-      store.totalPages = 3
+      store.displayCount = 20
       store.error = 'Some error'
 
       store.clearResults()
 
       expect(store.keyword).toBe('')
-      expect(store.results).toEqual([])
-      expect(store.currentPage).toBe(1)
-      expect(store.totalPages).toBe(0)
+      expect(store.allResults).toEqual([])
+      expect(store.displayCount).toBe(10)
       expect(store.error).toBe(null)
     })
   })
 
-  describe('paginatedResults getter', () => {
-    it('应该返回第一页的结果', () => {
+  describe('displayedResults getter', () => {
+    it('应该返回前 displayCount 条结果', () => {
       const store = useSearchStore()
-      
-      // 创建 25 个结果
-      store.results = Array.from({ length: 25 }, (_, i) => ({
+
+      store.allResults = Array.from({ length: 25 }, (_, i) => ({
         id: i + 1,
         name: `pokemon-${i + 1}`,
-        capture_rate: 100,
-        pokemon_v2_pokemoncolor: { name: 'red' },
-        pokemon_v2_pokemons: [],
+        pokemon_v2_pokemonabilities: [],
       }))
-      store.currentPage = 1
-      store.pageSize = 20
+      store.displayCount = 10
 
-      const paginated = store.paginatedResults
-
-      expect(paginated.length).toBe(20)
-      expect(paginated[0].id).toBe(1)
-      expect(paginated[19].id).toBe(20)
-    })
-
-    it('应该返回第二页的结果', () => {
-      const store = useSearchStore()
-      
-      // 创建 25 个结果
-      store.results = Array.from({ length: 25 }, (_, i) => ({
-        id: i + 1,
-        name: `pokemon-${i + 1}`,
-        capture_rate: 100,
-        pokemon_v2_pokemoncolor: { name: 'red' },
-        pokemon_v2_pokemons: [],
-      }))
-      store.currentPage = 2
-      store.pageSize = 20
-
-      const paginated = store.paginatedResults
-
-      expect(paginated.length).toBe(5)
-      expect(paginated[0].id).toBe(21)
-      expect(paginated[4].id).toBe(25)
+      expect(store.displayedResults.length).toBe(10)
+      expect(store.displayedResults[0].id).toBe(1)
+      expect(store.displayedResults[9].id).toBe(10)
     })
   })
 
   describe('hasResults getter', () => {
     it('应该在有结果时返回 true', () => {
       const store = useSearchStore()
-      
-      store.results = [
-        {
-          id: 25,
-          name: 'pikachu',
-          capture_rate: 190,
-          pokemon_v2_pokemoncolor: { name: 'yellow' },
-          pokemon_v2_pokemons: [],
-        },
+
+      store.allResults = [
+        { id: 25, name: 'pikachu', pokemon_v2_pokemonabilities: [] },
       ]
 
       expect(store.hasResults).toBe(true)
@@ -274,9 +210,6 @@ describe('SearchStore', () => {
 
     it('应该在无结果时返回 false', () => {
       const store = useSearchStore()
-      
-      store.results = []
-
       expect(store.hasResults).toBe(false)
     })
   })
@@ -284,9 +217,9 @@ describe('SearchStore', () => {
   describe('isEmpty getter', () => {
     it('应该在搜索后无结果时返回 true', () => {
       const store = useSearchStore()
-      
+
       store.keyword = 'nonexistent'
-      store.results = []
+      store.allResults = []
       store.isLoading = false
 
       expect(store.isEmpty).toBe(true)
@@ -294,16 +227,10 @@ describe('SearchStore', () => {
 
     it('应该在有结果时返回 false', () => {
       const store = useSearchStore()
-      
+
       store.keyword = 'pikachu'
-      store.results = [
-        {
-          id: 25,
-          name: 'pikachu',
-          capture_rate: 190,
-          pokemon_v2_pokemoncolor: { name: 'yellow' },
-          pokemon_v2_pokemons: [],
-        },
+      store.allResults = [
+        { id: 25, name: 'pikachu', pokemon_v2_pokemonabilities: [] },
       ]
       store.isLoading = false
 
@@ -312,9 +239,9 @@ describe('SearchStore', () => {
 
     it('应该在加载中时返回 false', () => {
       const store = useSearchStore()
-      
+
       store.keyword = 'pikachu'
-      store.results = []
+      store.allResults = []
       store.isLoading = true
 
       expect(store.isEmpty).toBe(false)
@@ -322,12 +249,38 @@ describe('SearchStore', () => {
 
     it('应该在未搜索时返回 false', () => {
       const store = useSearchStore()
-      
+
       store.keyword = ''
-      store.results = []
+      store.allResults = []
       store.isLoading = false
 
       expect(store.isEmpty).toBe(false)
+    })
+  })
+
+  describe('hasMore getter', () => {
+    it('应该在还有更多数据时返回 true', () => {
+      const store = useSearchStore()
+      store.allResults = Array.from({ length: 20 }, (_, i) => ({
+        id: i + 1,
+        name: `pokemon-${i + 1}`,
+        pokemon_v2_pokemonabilities: [],
+      }))
+      store.displayCount = 10
+
+      expect(store.hasMore).toBe(true)
+    })
+
+    it('应该在没有更多数据时返回 false', () => {
+      const store = useSearchStore()
+      store.allResults = Array.from({ length: 5 }, (_, i) => ({
+        id: i + 1,
+        name: `pokemon-${i + 1}`,
+        pokemon_v2_pokemonabilities: [],
+      }))
+      store.displayCount = 10
+
+      expect(store.hasMore).toBe(false)
     })
   })
 })

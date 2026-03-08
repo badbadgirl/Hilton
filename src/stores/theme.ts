@@ -6,6 +6,7 @@
 
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '../utils/useLocalStorage'
+import { Logger } from '../utils/logger'
 
 const THEME_STORAGE_KEY = 'pokemon_app_theme'
 
@@ -129,7 +130,7 @@ export const useThemeStore = defineStore('theme', {
       // 验证主题名称是否有效
       const theme = this.availableThemes.find(t => t.name === themeName)
       if (!theme) {
-        console.error(`Invalid theme name: ${themeName}`)
+        Logger.error(`无效的主题名称: ${themeName}`)
         return
       }
 

@@ -49,9 +49,10 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, computed } from 'vue'
-import type { Pokemon } from '../../types'
+import type { Pokemon } from '../../types/pokemon'
 import { graphqlClient } from '../../api/graphql'
 import { useThemeStore } from '../../stores/theme'
+import { Logger } from '../../utils/logger'
 import PokemonHeader from '../../components/PokemonHeader.vue'
 import AbilitiesList from '../../components/AbilitiesList.vue'
 import BackButton from '../../components/BackButton.vue'
@@ -76,7 +77,7 @@ onLoad(async (options: any) => {
       pokemon.value = await graphqlClient.getPokemonDetail(pokemonId)
     } catch (err) {
       error.value = err instanceof Error ? err.message : '获取宝可梦详情失败'
-      console.error('Failed to fetch pokemon detail:', err)
+      Logger.error('获取宝可梦详情失败:', err)
     } finally {
       isLoading.value = false
     }
@@ -84,7 +85,7 @@ onLoad(async (options: any) => {
 })
 
 const handleBack = () => {
-  // @ts-ignore - WeChat mini-app API
+  // 返回上一层级
   wx.navigateBack()
 }
 </script>

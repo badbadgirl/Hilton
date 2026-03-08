@@ -95,10 +95,11 @@ describe('WelcomeModal', () => {
         },
       })
 
-      const image = wrapper.find('.greeting-gif')
+      const image = wrapper.find('.greeting-animation')
       expect(image.exists()).toBe(true)
-      expect(image.attributes('src')).toBe('/static/images/welcome.gif')
-      expect(image.attributes('mode')).toBe('aspectFit')
+      expect(wrapper.find('.greeting-cn').exists()).toBe(true)
+      expect(wrapper.find('.greeting-jp').exists()).toBe(true)
+      expect(wrapper.find('.greeting-en').exists()).toBe(true)
     })
 
     it('should display close button', () => {
@@ -398,7 +399,7 @@ describe('WelcomeModal', () => {
       })
 
       const body = wrapper.find('.modal-body')
-      expect(body.find('.greeting-gif').exists()).toBe(true)
+      expect(body.find('.greeting-animation').exists()).toBe(true)
       expect(body.find('.greeting-text').exists()).toBe(true)
     })
   })

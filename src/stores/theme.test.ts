@@ -173,7 +173,7 @@ describe('ThemeStore', () => {
       store.setTheme('invalid-theme')
 
       expect(store.currentTheme).toBe(originalTheme)
-      expect(consoleErrorSpy).toHaveBeenCalledWith('Invalid theme name: invalid-theme')
+      expect(consoleErrorSpy).toHaveBeenCalledWith('无效的主题名称: invalid-theme')
 
       consoleErrorSpy.mockRestore()
     })

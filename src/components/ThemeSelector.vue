@@ -38,10 +38,12 @@ const handleThemeChange = (themeName: string) => {
   background: white;
   border-radius: @border-radius-medium;
   box-shadow: @shadow-small;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .selector-label {
-  display: block;
   font-size: 14px;
   font-weight: bold;
   color: @text-primary;
@@ -77,8 +79,8 @@ const handleThemeChange = (themeName: string) => {
 }
 
 .theme-preview {
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   margin-bottom: @spacing-xs;
   box-shadow: @shadow-small;

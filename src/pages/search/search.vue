@@ -63,10 +63,8 @@ onReachBottom(() => {
 })
 
 const navigateToDetail = (pokemonId: number) => {
-  // @ts-ignore - WeChat mini-app API
-  wx.navigateTo({
-    url: `/pages/detail/detail?id=${pokemonId}`
-  })
+  // 跳转详情页
+  wx.navigateTo({ url: `/pages/detail/detail?id=${pokemonId}` })
 }
 
 </script>

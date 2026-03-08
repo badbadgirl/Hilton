@@ -257,8 +257,8 @@ describe('GraphQLClient', () => {
         fail: expect.any(Function),
       })
 
-      expect(result.pokemon_v2_pokemon_by_pk.name).toBe('pikachu')
-      expect(result.pokemon_v2_pokemon_by_pk.height).toBe(4)
+      expect(result.name).toBe('pikachu')
+      expect(result.height).toBe(4)
     })
 
     it('should handle GraphQL errors', async () => {

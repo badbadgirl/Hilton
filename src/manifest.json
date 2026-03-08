@@ -8,18 +8,20 @@
   "mp-weixin": {
     "appid": "",
     "setting": {
-      "urlCheck": false,
+      "urlCheck": true,
       "es6": true,
       "postcss": true,
       "minified": true,
-      "checkSiteMap": false
+      "checkSiteMap": true
     },
     "usingComponents": true,
     "permission": {
       "scope.userLocation": {
         "desc": "你的位置信息将用于小程序位置接口的效果展示"
       }
-    }
+    },
+    "requiredPrivateInfos": [],
+    "lazyCodeLoading": "requiredComponents"
   },
   "uniStatistics": {
     "enable": false

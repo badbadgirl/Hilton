@@ -119,7 +119,7 @@ describe('useLocalStorage', () => {
     // 不应该抛出错误
     expect(() => save()).not.toThrow()
     expect(consoleErrorSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Failed to save to localStorage'),
+      expect.stringContaining('保存本地存储失败'),
       expect.any(Error)
     )
 
@@ -136,7 +136,7 @@ describe('useLocalStorage', () => {
 
     expect(value.value).toBe('default')
     expect(consoleErrorSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Failed to load from localStorage'),
+      expect.stringContaining('读取本地存储失败'),
       expect.any(Error)
     )
 
@@ -155,7 +155,7 @@ describe('useLocalStorage', () => {
     // 不应该抛出错误
     expect(() => clear()).not.toThrow()
     expect(consoleErrorSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Failed to clear localStorage'),
+      expect.stringContaining('清除本地存储失败'),
       expect.any(Error)
     )
 
